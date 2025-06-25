@@ -1,0 +1,56 @@
+<div class="container">
+    <button class="prev-button" [ngClass]="{'disabled': scrollLocked()}" [disabled]="scrollLocked()"
+        (click)="scrollContainer('left')">
+        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="500.000000pt" height="500.000000pt"
+            viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                <path d="M1382 4790 c-57 -26 -87 -50 -122 -98 -36 -50 -60 -120 -60 -175 0
+                        -102 -20 -80 975 -1070 509 -506 925 -928 925 -936 0 -9 -420 -437 -934 -951
+                        -902 -903 -934 -937 -956 -995 -17 -46 -21 -72 -16 -113 6 -53 41 -142 56
+                        -142 16 0 70 -52 64 -61 -10 -16 88 -52 157 -57 135 -9 57 -79 1236 1101 578
+                        579 1059 1067 1068 1086 9 18 18 43 19 55 2 11 7 29 11 39 11 26 -2 101 -24
+                        146 -11 21 -68 90 -127 152 -148 157 -1925 1930 -1978 1974 -23 19 -59 41 -79
+                        50 -52 22 -162 19 -215 -5z" />
+            </g>
+        </svg>
+    </button>
+    <button class="next-button" [ngClass]="{'disabled': scrollLocked()}" [disabled]="scrollLocked()"
+        (click)="scrollContainer('right')">
+        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="500.000000pt" height="500.000000pt"
+            viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet">
+            <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
+                <path d="M1382 4790 c-57 -26 -87 -50 -122 -98 -36 -50 -60 -120 -60 -175 0
+                        -102 -20 -80 975 -1070 509 -506 925 -928 925 -936 0 -9 -420 -437 -934 -951
+                        -902 -903 -934 -937 -956 -995 -17 -46 -21 -72 -16 -113 6 -53 41 -142 56
+                        -142 16 0 70 -52 64 -61 -10 -16 88 -52 157 -57 135 -9 57 -79 1236 1101 578
+                        579 1059 1067 1068 1086 9 18 18 43 19 55 2 11 7 29 11 39 11 26 -2 101 -24
+                        146 -11 21 -68 90 -127 152 -148 157 -1925 1930 -1978 1974 -23 19 -59 41 -79
+                        50 -52 22 -162 19 -215 -5z" />
+            </g>
+        </svg>
+    </button>
+    <div class="content">
+        @for (card of cards(); track $index) {
+        <div class="card-container">
+            <div class="card">
+                <div class="card-img">
+                    <img class="img" [src]="card.imageSrc" [alt]="card.imageAlt">
+                </div>
+
+                @if (mode() == 'complex') {
+                <div class="card-info">
+                    <div class="top-section">
+                        <div class="service-name">{{card.subscription}}</div>
+                        <div class="timestamp">{{card.timestamp}} days ago</div>
+                    </div>
+                    <div class="button-section">
+                        <div class="persons">2/{{card.persons}}</div>
+                        <div class="price">€{{card.price}}</div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        }
+    </div>
+</div>

@@ -2,58 +2,31 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.2.
 
-## Development server
+## How to start developing in the project
+For starting this project in development mode, you will have to do the following:
 
-To start a local development server, run:
+1. Start compiling the carousel library in watch mode: ``bun run watchCarousel``
 
-```bash
-ng serve
+2.  Once the compiling has started, you can start running the Angular application by running ``ng s``
+
+## How does it work?
+When compiling the carousel library, you can use the "build" of this library in your app. For example, it is being used like [this](https://github.com/DavMunHer/carousel-workspace/tree/main/projects/carousel-app/src/app/components/carousel-implementation) in the carousel-app of this project:
+
+```ts
+import { Component } from '@angular/core';
+import { CarouselComponent } from 'carousel';
+
+@Component({
+  selector: 'carousel-implementation',
+  imports: [CarouselComponent],
+  templateUrl: './carousel-implementation.component.html',
+  styleUrl: './carousel-implementation.component.css'
+})
+export class CarouselImplementationComponent {
+
+}
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+By developing in this way, we can make sure that the behaviour of this component will be the same in any other project, as the carousel-app is not related with the carousel library.
 
-## Code scaffolding
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
