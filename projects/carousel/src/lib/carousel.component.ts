@@ -5,12 +5,11 @@ import { Component, ElementRef, inject, input, signal } from '@angular/core';
   selector: 'carousel',
   imports: [NgClass],
   templateUrl: './carousel.component.html',
-  styleUrl: './carousel.component.css'
+  styleUrl: './carousel.component.css',
 })
 export class CarouselComponent {
-public mode = input<'complex' | 'simple'>('complex');
+  public mode = input<'complex' | 'simple'>('complex');
   public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
-
 
   private element = inject(ElementRef).nativeElement as HTMLElement;
   protected scrollLocked = signal<boolean>(false);
@@ -104,9 +103,11 @@ public mode = input<'complex' | 'simple'>('complex');
   }
 
   private startAutoScroll(direction: 'right' | 'left' = 'right') {
-      let msPerMove = 2000;
-      let intervalCounter = 0;
-    const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
+    let msPerMove = 2000;
+    let intervalCounter = 0;
+    const showedCards = Number(
+      getComputedStyle(this.element).getPropertyValue('--cards-number')
+    );
     if (direction == 'right') {
       const currentInterval = setInterval(() => {
         intervalCounter++;
@@ -118,7 +119,7 @@ public mode = input<'complex' | 'simple'>('complex');
         }
       }, msPerMove);
     } else {
-      this.scrollContainer('left');
+      this.scrollToEnd('left');
       this.startAutoScroll('right');
     }
   }
@@ -130,13 +131,25 @@ public mode = input<'complex' | 'simple'>('complex');
     const cardDimension = card?.getBoundingClientRect();
     const containerWidth = cardDimension?.width;
     if (direction == 'right') {
-      content.scrollLeft += (containerWidth! + 20);
+      content.scrollLeft += containerWidth! + 20;
     } else {
-      // const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
-      content.scrollLeft -= (containerWidth! + 20) /* (this.cards().length - showedCards)*/;
+      content.scrollLeft -= containerWidth! + 20;
     }
     setTimeout(() => {
       this.scrollLocked.set(false);
     }, 1000);
+  }
+
+  protected scrollToEnd(direction: 'left' | 'right') {
+    const content = this.element.querySelector('.content') as HTMLElement;
+    const card = this.element.querySelector('.card-container');
+    const cardDimension = card?.getBoundingClientRect();
+    const containerWidth = cardDimension?.width;
+    const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
+    if (direction == 'right') {
+      content.scrollLeft += containerWidth! + 20 * (this.cards().length - showedCards);
+    } else {
+      content.scrollLeft -= (containerWidth! + 20) * (this.cards().length - showedCards);
+    }
   }
 }
