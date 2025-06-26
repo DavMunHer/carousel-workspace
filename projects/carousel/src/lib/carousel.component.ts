@@ -132,8 +132,8 @@ public mode = input<'complex' | 'simple'>('complex');
     if (direction == 'right') {
       content.scrollLeft += (containerWidth! + 20);
     } else {
-      const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
-      content.scrollLeft -= (containerWidth! + 20) * (this.cards().length - showedCards);
+      // const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
+      content.scrollLeft -= (containerWidth! + 20) /* (this.cards().length - showedCards)*/;
     }
     setTimeout(() => {
       this.scrollLocked.set(false);
