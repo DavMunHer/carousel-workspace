@@ -10,6 +10,11 @@ import { Component, ElementRef, inject, input, signal } from '@angular/core';
 export class CarouselComponent {
   public mode = input<'complex' | 'simple'>('complex');
   public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
+  public autoScrollLocked = signal<boolean>(false);
+  private currentScroll = signal<{direction: 'right' | 'left', scrollNumber: number}>({
+    direction: 'right',
+    scrollNumber: 0
+  });
 
   private element = inject(ElementRef).nativeElement as HTMLElement;
   protected scrollLocked = signal<boolean>(false);
@@ -98,7 +103,8 @@ export class CarouselComponent {
 
   ngOnInit(): void {
     if (this.scrollBehaviour() == 'auto') {
-      this.startAutoScroll();
+      // this.startAutoScroll();
+      this.autoScroll2(this.currentScroll().direction, this.currentScroll().scrollNumber);
     }
   }
 
@@ -124,6 +130,51 @@ export class CarouselComponent {
     }
   }
 
+  private autoScroll2(direction: 'left' | 'right' = 'right', currentCount: number) {
+    let nextDirection: 'right' | 'left' = 'right';
+    let nextCount = currentCount;
+
+    if (!this.autoScrollLocked()) {
+    nextCount = currentCount + 1;
+      const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
+      if (direction == 'right') {
+        const currentTimeOut = setTimeout(() => {
+          this.scrollContainer('right');
+          if (currentCount == this.cards().length - showedCards) {
+            nextDirection = direction == 'right' ? 'left' : 'right';
+            if (nextDirection == 'left') {
+              nextCount = 0;
+            } 
+            clearTimeout(currentTimeOut);
+          }
+        }, 2000);
+      } else {
+        this.scrollToEnd('left');
+        nextCount = 0;
+      }
+    }
+    if (nextCount == 0) {
+        this.autoScroll2(nextDirection, nextCount);
+    } else {
+      setTimeout(() => {
+        this.autoScroll2(nextDirection, nextCount);
+      }, 2000);
+    }
+  }
+
+  protected stopAutoScroll() {
+    this.autoScrollLocked.set(true);
+  }
+
+  protected resumeAutoScroll() {
+    this.autoScrollLocked.set(false);
+  }
+
+  protected contunueAutoScroll() {
+    this.autoScrollLocked.set(false);
+    this.autoScroll2(this.currentScroll().direction, this.currentScroll().scrollNumber);
+  }
+
   protected scrollContainer(direction: 'left' | 'right') {
     this.scrollLocked.set(true);
     const content = this.element.querySelector('.content') as HTMLElement;
@@ -145,11 +196,15 @@ export class CarouselComponent {
     const card = this.element.querySelector('.card-container');
     const cardDimension = card?.getBoundingClientRect();
     const containerWidth = cardDimension?.width;
-    const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
+    const showedCards = Number(
+      getComputedStyle(this.element).getPropertyValue('--cards-number')
+    );
     if (direction == 'right') {
-      content.scrollLeft += containerWidth! + 20 * (this.cards().length - showedCards);
+      content.scrollLeft +=
+        containerWidth! + 20 * (this.cards().length - showedCards);
     } else {
-      content.scrollLeft -= (containerWidth! + 20) * (this.cards().length - showedCards);
+      content.scrollLeft -=
+        (containerWidth! + 20) * (this.cards().length - showedCards);
     }
   }
 }
