@@ -11,10 +11,6 @@ export class CarouselComponent {
   public mode = input<'complex' | 'simple'>('complex');
   public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
   public autoScrollLocked = signal<boolean>(false);
-  private currentScroll = signal<{direction: 'right' | 'left', scrollNumber: number}>({
-    direction: 'right',
-    scrollNumber: 0
-  });
 
   private element = inject(ElementRef).nativeElement as HTMLElement;
   protected scrollLocked = signal<boolean>(false);
@@ -104,7 +100,7 @@ export class CarouselComponent {
   ngOnInit(): void {
     if (this.scrollBehaviour() == 'auto') {
       // this.startAutoScroll();
-      this.autoScroll2(this.currentScroll().direction, this.currentScroll().scrollNumber);
+      this.autoScroll2('right', 0);
     }
   }
 
@@ -134,30 +130,35 @@ export class CarouselComponent {
     let nextDirection: 'right' | 'left' = 'right';
     let nextCount = currentCount;
 
+    console.log(direction);
     if (!this.autoScrollLocked()) {
     nextCount = currentCount + 1;
       const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
       if (direction == 'right') {
         const currentTimeOut = setTimeout(() => {
-          this.scrollContainer('right');
-          if (currentCount == this.cards().length - showedCards) {
-            nextDirection = direction == 'right' ? 'left' : 'right';
-            if (nextDirection == 'left') {
-              nextCount = 0;
-            } 
-            clearTimeout(currentTimeOut);
-          }
+        console.log(currentCount);
+        this.scrollContainer('right');
+        if (currentCount == this.cards().length - showedCards) {
+          nextDirection = direction == 'right' ? 'left' : 'right';
+          if (nextDirection == 'left') {
+            nextCount = 0;
+          } 
+          clearTimeout(currentTimeOut);
+        }
         }, 2000);
       } else {
         this.scrollToEnd('left');
         nextCount = 0;
+        nextDirection = 'right';
       }
     }
     if (nextCount == 0) {
+      // The next direction will be left
         this.autoScroll2(nextDirection, nextCount);
     } else {
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         this.autoScroll2(nextDirection, nextCount);
+        clearTimeout(timeout);
       }, 2000);
     }
   }
@@ -168,11 +169,6 @@ export class CarouselComponent {
 
   protected resumeAutoScroll() {
     this.autoScrollLocked.set(false);
-  }
-
-  protected contunueAutoScroll() {
-    this.autoScrollLocked.set(false);
-    this.autoScroll2(this.currentScroll().direction, this.currentScroll().scrollNumber);
   }
 
   protected scrollContainer(direction: 'left' | 'right') {
