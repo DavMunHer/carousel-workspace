@@ -126,25 +126,33 @@ export class CarouselComponent {
     }
   }
 
-  private autoScroll2(direction: 'left' | 'right' = 'right', currentCount: number) {
-    let nextDirection: 'right' | 'left' = 'right';
+  private autoScroll2(
+    direction: 'left' | 'right' = 'right',
+    currentCount: number
+  ) {
+    let nextDirection: 'right' | 'left' = direction;
     let nextCount = currentCount;
 
-    console.log(direction);
     if (!this.autoScrollLocked()) {
-    nextCount = currentCount + 1;
-      const showedCards = Number(getComputedStyle(this.element).getPropertyValue('--cards-number'));
+      const showedCards = Number(
+        getComputedStyle(this.element).getPropertyValue('--cards-number')
+      );
       if (direction == 'right') {
         const currentTimeOut = setTimeout(() => {
-        console.log(currentCount);
-        this.scrollContainer('right');
-        if (currentCount == this.cards().length - showedCards) {
-          nextDirection = direction == 'right' ? 'left' : 'right';
-          if (nextDirection == 'left') {
-            nextCount = 0;
-          } 
+          if (this.autoScrollLocked()) {
+            // console.log(currentCount);
+            this.autoScroll2(direction, currentCount);
+          } else {
+            this.scrollContainer('right');
+            nextCount = currentCount + 1;
+            if (currentCount == this.cards().length - showedCards) {
+              nextDirection = direction == 'right' ? 'left' : 'right';
+              if (nextDirection == 'left') {
+                nextCount = 0;
+              }
+            }
+          }
           clearTimeout(currentTimeOut);
-        }
         }, 2000);
       } else {
         this.scrollToEnd('left');
@@ -152,15 +160,20 @@ export class CarouselComponent {
         nextDirection = 'right';
       }
     }
-    if (nextCount == 0) {
-      // The next direction will be left
-        this.autoScroll2(nextDirection, nextCount);
-    } else {
-      const timeout = setTimeout(() => {
-        this.autoScroll2(nextDirection, nextCount);
-        clearTimeout(timeout);
-      }, 2000);
-    }
+    const timeout = setTimeout(() => {
+      this.autoScroll2(nextDirection, nextCount);
+      clearTimeout(timeout);
+    }, 2000);
+
+    // if (nextCount == 0) {
+    //   // The next direction will be left
+    //   this.autoScroll2(nextDirection, nextCount);
+    // } else {
+    //   const timeout = setTimeout(() => {
+    //     this.autoScroll2(nextDirection, nextCount);
+    //     clearTimeout(timeout);
+    //   }, 2000);
+    // }
   }
 
   protected stopAutoScroll() {
