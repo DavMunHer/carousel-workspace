@@ -1,8 +1,10 @@
 <div class="container">
     <button class="prev-button" [ngClass]="{'disabled': scrollLocked()}" [disabled]="scrollLocked()"
         (click)="scrollContainer('left')">
-        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="500.000000pt" height="500.000000pt"
-            viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet">
+        <svg class="arrow-svg" version="1.0" xmlns="http://www.w3.org/2000/svg" width="500.000000pt" height="500.000000pt"
+            viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet"
+            (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()"
+            >
             <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
                 <path d="M1382 4790 c-57 -26 -87 -50 -122 -98 -36 -50 -60 -120 -60 -175 0
                         -102 -20 -80 975 -1070 509 -506 925 -928 925 -936 0 -9 -420 -437 -934 -951
@@ -16,10 +18,12 @@
     </button>
     <button class="next-button" [ngClass]="{'disabled': scrollLocked()}" [disabled]="scrollLocked()"
         (click)="scrollContainer('right')">
-        <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="500.000000pt" height="500.000000pt"
-            viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet">
+        <svg class="arrow-svg" version="1.0" xmlns="http://www.w3.org/2000/svg" width="500.000000pt" height="500.000000pt"
+            viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet" (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()"
+            >
             <g transform="translate(0.000000,500.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
-                <path d="M1382 4790 c-57 -26 -87 -50 -122 -98 -36 -50 -60 -120 -60 -175 0
+                <path 
+                d="M1382 4790 c-57 -26 -87 -50 -122 -98 -36 -50 -60 -120 -60 -175 0
                         -102 -20 -80 975 -1070 509 -506 925 -928 925 -936 0 -9 -420 -437 -934 -951
                         -902 -903 -934 -937 -956 -995 -17 -46 -21 -72 -16 -113 6 -53 41 -142 56
                         -142 16 0 70 -52 64 -61 -10 -16 88 -52 157 -57 135 -9 57 -79 1236 1101 578
@@ -32,7 +36,7 @@
     <div class="content">
         @for (card of cards(); track $index) {
         <div class="card-container">
-            <div class="card">
+            <div class="card" (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()" >
                 <div class="card-img">
                     <img class="img" [src]="card.imageSrc" [alt]="card.imageAlt">
                 </div>

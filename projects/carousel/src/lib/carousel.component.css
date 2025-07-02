@@ -40,6 +40,10 @@
     cursor: pointer;
     z-index: 5;
     background: none;
+
+    & .arrow-svg {
+      height: fit-content;
+    }
   }
 
   & .prev-button {
