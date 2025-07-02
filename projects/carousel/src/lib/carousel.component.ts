@@ -130,6 +130,8 @@ export class CarouselComponent {
     direction: 'left' | 'right' = 'right',
     currentCount: number
   ) {
+    let msPerAutoMove = 2000;
+    const firstMoveDelayMultiplier = 1.5;
     let nextDirection: 'right' | 'left' = direction;
     let nextCount = currentCount;
 
@@ -138,7 +140,6 @@ export class CarouselComponent {
         getComputedStyle(this.element).getPropertyValue('--cards-number')
       );
       if (direction == 'right') {
-        const currentTimeOut = setTimeout(() => {
           if (this.autoScrollLocked()) {
             // console.log(currentCount);
             this.autoScroll2(direction, currentCount);
@@ -152,28 +153,17 @@ export class CarouselComponent {
               }
             }
           }
-          clearTimeout(currentTimeOut);
-        }, 2000);
       } else {
         this.scrollToEnd('left');
-        nextCount = 0;
+        nextCount = 1;
         nextDirection = 'right';
+        msPerAutoMove *= firstMoveDelayMultiplier; // Add delay on first move after going back to the first card
       }
     }
     const timeout = setTimeout(() => {
       this.autoScroll2(nextDirection, nextCount);
       clearTimeout(timeout);
-    }, 2000);
-
-    // if (nextCount == 0) {
-    //   // The next direction will be left
-    //   this.autoScroll2(nextDirection, nextCount);
-    // } else {
-    //   const timeout = setTimeout(() => {
-    //     this.autoScroll2(nextDirection, nextCount);
-    //     clearTimeout(timeout);
-    //   }, 2000);
-    // }
+    }, msPerAutoMove);
   }
 
   protected stopAutoScroll() {
