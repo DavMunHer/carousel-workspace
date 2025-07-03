@@ -179,9 +179,9 @@ export class CarouselComponent {
     const fatherContainer = this.carouselHtmlElement.querySelector('.content') as HTMLElement;
     const containerLeftPosition = fatherContainer.scrollLeft;
     const card = this.carouselHtmlElement.querySelector('.card-container');
-    const cardDimension = card?.getBoundingClientRect();
-    const containerWidth = cardDimension?.width!;
-    const pxPerMovement = containerWidth + 20;
+    const cardWidth = card?.getBoundingClientRect().width!;
+    const cardsGap = parseInt(getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap'));
+    const pxPerMovement = cardWidth + cardsGap;
     let realMovement = pxPerMovement;
     
     if (direction == 'right') {
