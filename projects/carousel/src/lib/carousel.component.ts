@@ -104,6 +104,7 @@ export class CarouselComponent {
     }
   }
 
+  // This method is currently not being used at all
   private startAutoScroll(direction: 'right' | 'left' = 'right') {
     let msPerMove = 2000;
     let intervalCounter = 0;
@@ -175,14 +176,24 @@ export class CarouselComponent {
 
   protected scrollContainer(direction: 'left' | 'right') {
     this.scrollLocked.set(true);
-    const content = this.carouselHtmlElement.querySelector('.content') as HTMLElement;
+    const fatherContainer = this.carouselHtmlElement.querySelector('.content') as HTMLElement;
+    const containerLeftPosition = fatherContainer.scrollLeft;
     const card = this.carouselHtmlElement.querySelector('.card-container');
     const cardDimension = card?.getBoundingClientRect();
-    const containerWidth = cardDimension?.width;
+    const containerWidth = cardDimension?.width!;
+    const pxPerMovement = containerWidth + 20;
+    let realMovement = pxPerMovement;
+    
     if (direction == 'right') {
-      content.scrollLeft += containerWidth! + 20;
+      if (containerLeftPosition % pxPerMovement != 0) {
+        realMovement -= (containerLeftPosition % pxPerMovement)
+      }
+      fatherContainer.scrollLeft += realMovement;
     } else {
-      content.scrollLeft -= containerWidth! + 20;
+      if (containerLeftPosition % pxPerMovement != 0) {
+        realMovement = (containerLeftPosition % pxPerMovement);
+      }
+      fatherContainer.scrollLeft -= realMovement;
     }
     setTimeout(() => {
       this.scrollLocked.set(false);
