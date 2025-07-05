@@ -104,7 +104,7 @@ export class CarouselComponent {
     }
   }
 
-  reachedEnd() {
+  private reachedEnd() {
     const fatherContainer = this.carouselHtmlElement.querySelector('.content') as HTMLElement;
     const containerLeftPosition = fatherContainer.scrollLeft;
     const card = this.carouselHtmlElement.querySelector('.card-container');
@@ -115,9 +115,14 @@ export class CarouselComponent {
     const showedCards = Number(
       getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-number')
     );
+    console.log(movedTimes);
+    console.log(this.cards().length - showedCards);
+
     // We have reached the end of the cards, now go back to beginning
-    return movedTimes == this.cards().length - showedCards
+    return movedTimes >= this.cards().length - showedCards
   }
+
+
   // This method is currently not being used at all
   private startAutoScroll(direction: 'right' | 'left' = 'right') {
     let msPerMove = 2000;
@@ -159,7 +164,6 @@ export class CarouselComponent {
           msPerAutoMove *= firstMoveDelayMultiplier; // Add delay on first move after going back to the first card
         }
       }
-      console.log(this.reachedEnd());
     }
     const nextMovementTimeout = setTimeout(() => {
       this.startStoppableAutoScroll();
