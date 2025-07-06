@@ -1,8 +1,8 @@
 import { InjectionToken } from "@angular/core";
 
 export interface AutoScrollConfig {
-    msPerMove: number,
-    firstMoveDelayMultiplier: number 
+    msPerMove: number, /* Should be positive and gt 1000 */
+    firstMoveDelayMultiplier: number /* Should be positive */
 }
 
 

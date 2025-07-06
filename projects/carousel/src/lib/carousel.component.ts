@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, ElementRef, inject, input, signal } from '@angular/core';
-import { AUTO_SCROLL_CONFIG } from '../public-api';
+import { AUTO_SCROLL_CONFIG } from './config/autoScrollConfig';
 
 @Component({
   selector: 'carousel',
