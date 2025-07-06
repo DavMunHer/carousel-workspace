@@ -1,5 +1,5 @@
 <div class="container">
-    <button class="prev-button" [ngClass]="{'disabled': scrollLocked()}" [disabled]="scrollLocked()"
+    <button class="prev-button" aria-label="previous" [ngClass]="{'disabled': scrollLocked()}" [disabled]="scrollLocked()"
         (click)="scrollContainer('left')">
         <svg class="arrow-svg" version="1.0" xmlns="http://www.w3.org/2000/svg" width="500.000000pt" height="500.000000pt"
             viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet"
@@ -16,7 +16,7 @@
             </g>
         </svg>
     </button>
-    <button class="next-button" [ngClass]="{'disabled': scrollLocked()}" [disabled]="scrollLocked()"
+    <button class="next-button" aria-label="next" [ngClass]="{'disabled': scrollLocked()}" [disabled]="scrollLocked()"
         (click)="scrollContainer('right')">
         <svg class="arrow-svg" version="1.0" xmlns="http://www.w3.org/2000/svg" width="500.000000pt" height="500.000000pt"
             viewBox="0 0 500.000000 500.000000" preserveAspectRatio="xMidYMid meet" (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()"

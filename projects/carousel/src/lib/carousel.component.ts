@@ -9,7 +9,7 @@ import { Component, ElementRef, inject, input, signal } from '@angular/core';
 })
 export class CarouselComponent {
   public mode = input<'complex' | 'simple'>('complex');
-  public scrollBehaviour = input<'auto' | 'manual-only'>('auto');
+  public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
   public autoScrollLocked = signal<boolean>(false);
 
   private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement;
