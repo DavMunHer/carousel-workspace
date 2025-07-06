@@ -10,7 +10,6 @@ import { CardComponent } from './subcomponents/card/card.component';
   styleUrl: './carousel.component.css',
 })
 export class CarouselComponent {
-  public mode = input<'complex' | 'simple'>('complex');
   public scrollBehaviour = input<'auto' | 'manual-only'>('auto');
   private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, {optional: true});
 
