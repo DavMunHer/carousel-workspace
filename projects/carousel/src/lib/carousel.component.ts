@@ -1,5 +1,5 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, ContentChild, ElementRef, inject, input, signal, TemplateRef } from '@angular/core';
+import { Component, ContentChild, ElementRef, inject, input, signal, TemplateRef, ViewChild } from '@angular/core';
 import { AUTO_SCROLL_CONFIG } from './config/autoScrollConfig';
 import { CardComponent } from './subcomponents/card/card.component';
 
@@ -17,7 +17,13 @@ export class CarouselComponent {
   protected scrollLocked = signal<boolean>(false);
 
   public cards = input.required<any[]>();
-  @ContentChild(TemplateRef) template!: TemplateRef<any>;
+  @ContentChild(TemplateRef) userTemplate!: TemplateRef<any>;
+  @ViewChild('defaultTemplate') defaultTemplate!: TemplateRef<any>;
+
+  get templateToUse(): TemplateRef<any> {
+    return this.userTemplate ?? this.defaultTemplate;
+  }
+
 
   ngOnInit(): void {
     if (this.scrollBehaviour() == 'auto') {

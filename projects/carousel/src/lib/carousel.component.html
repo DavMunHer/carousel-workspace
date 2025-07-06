@@ -37,7 +37,7 @@
         @for (card of cards(); track $index) {
         <div class="carousel-card-container">
             <!-- <card-template [card]="card" (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()" /> -->
-        <ng-container *ngTemplateOutlet="template; context: { $implicit: card }"></ng-container>
+        <ng-container *ngTemplateOutlet="templateToUse; context: { $implicit: card }"></ng-container>
         </div>
         }
     </div>
