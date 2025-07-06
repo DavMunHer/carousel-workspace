@@ -6,6 +6,6 @@ import { provideCarousel } from 'carousel';
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
-    provideCarousel({firstMoveDelayMultiplier: 2, msPerMove: 4000})
+    provideCarousel({firstMoveDelayMultiplier: 2, msPerMove: 2000})
   ]
 };

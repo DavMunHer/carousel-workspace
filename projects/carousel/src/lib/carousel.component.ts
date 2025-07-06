@@ -1,15 +1,15 @@
 import { NgClass } from '@angular/common';
 import { Component, ElementRef, inject, input, signal } from '@angular/core';
 import { AUTO_SCROLL_CONFIG } from './config/autoScrollConfig';
+import { CardComponent } from './subcomponents/card/card.component';
 
 @Component({
   selector: 'carousel',
-  imports: [NgClass],
+  imports: [NgClass, CardComponent],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css',
 })
 export class CarouselComponent {
-  public mode = input<'complex' | 'simple'>('complex');
   public scrollBehaviour = input<'auto' | 'manual-only'>('auto');
   private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, {optional: true});
 
@@ -111,7 +111,7 @@ export class CarouselComponent {
       '.content'
     ) as HTMLElement;
     const containerLeftPosition = fatherContainer.scrollLeft;
-    const card = this.carouselHtmlElement.querySelector('.card-container');
+    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
     const cardWidth = card?.getBoundingClientRect().width!;
     const cardsGap = parseInt(
       getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap')
@@ -188,7 +188,7 @@ export class CarouselComponent {
       '.content'
     ) as HTMLElement;
     const containerLeftPosition = fatherContainer.scrollLeft;
-    const card = this.carouselHtmlElement.querySelector('.card-container');
+    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
     const cardWidth = card?.getBoundingClientRect().width!;
     const cardsGap = parseInt(
       getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap')
@@ -216,7 +216,7 @@ export class CarouselComponent {
     const content = this.carouselHtmlElement.querySelector(
       '.content'
     ) as HTMLElement;
-    const card = this.carouselHtmlElement.querySelector('.card-container');
+    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
     const cardDimension = card?.getBoundingClientRect();
     const containerWidth = cardDimension?.width;
     const showedCards = Number(
