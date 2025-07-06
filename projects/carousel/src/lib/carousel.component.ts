@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import { Component, ElementRef, inject, input, signal } from '@angular/core';
+import { AUTO_SCROLL_CONFIG } from '../public-api';
 
 @Component({
   selector: 'carousel',
@@ -9,9 +10,10 @@ import { Component, ElementRef, inject, input, signal } from '@angular/core';
 })
 export class CarouselComponent {
   public mode = input<'complex' | 'simple'>('complex');
-  public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
-  public autoScrollLocked = signal<boolean>(false);
+  public scrollBehaviour = input<'auto' | 'manual-only'>('auto');
+  private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, {optional: true});
 
+  public autoScrollLocked = signal<boolean>(false);
   private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement;
   protected scrollLocked = signal<boolean>(false);
   cards = signal([
@@ -152,7 +154,12 @@ export class CarouselComponent {
 
   private startStoppableAutoScroll() {
     let msPerAutoMove = 2000;
-    const firstMoveDelayMultiplier = 1.5; // Delay for the first move when restarting the scroll (back to left)
+    let firstMoveDelayMultiplier = 1.5; // Delay for the first move when restarting the scroll (back to left)
+    if (this.autoScrollConfig) {
+      msPerAutoMove = this.autoScrollConfig.msPerMove;
+      firstMoveDelayMultiplier = this.autoScrollConfig.firstMoveDelayMultiplier
+    }
+
     if (!this.autoScrollLocked()) {
       this.scrollContainer('right');
       if (this.reachedEnd()) {
