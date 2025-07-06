@@ -111,7 +111,7 @@ export class CarouselComponent {
       '.content'
     ) as HTMLElement;
     const containerLeftPosition = fatherContainer.scrollLeft;
-    const card = this.carouselHtmlElement.querySelector('.card-container');
+    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
     const cardWidth = card?.getBoundingClientRect().width!;
     const cardsGap = parseInt(
       getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap')
@@ -188,7 +188,7 @@ export class CarouselComponent {
       '.content'
     ) as HTMLElement;
     const containerLeftPosition = fatherContainer.scrollLeft;
-    const card = this.carouselHtmlElement.querySelector('.card-container');
+    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
     const cardWidth = card?.getBoundingClientRect().width!;
     const cardsGap = parseInt(
       getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap')
@@ -216,7 +216,7 @@ export class CarouselComponent {
     const content = this.carouselHtmlElement.querySelector(
       '.content'
     ) as HTMLElement;
-    const card = this.carouselHtmlElement.querySelector('.card-container');
+    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
     const cardDimension = card?.getBoundingClientRect();
     const containerWidth = cardDimension?.width;
     const showedCards = Number(

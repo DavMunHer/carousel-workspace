@@ -35,7 +35,7 @@
     </button>
     <div class="content">
         @for (card of cards(); track $index) {
-        <div class="card-container">
+        <div class="carousel-card-container">
             <div class="card" (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()" >
                 <div class="card-img">
                     <img class="img" [src]="card.imageSrc" [alt]="card.imageAlt">

@@ -89,7 +89,7 @@
 
     /* End styles for removing scrollbar*/
 
-    & .card-container {
+    & .carousel-card-container {
       flex: 0 0 var(--card-width);
       border: 1px solid #ccc;
       border-radius: 16px;
