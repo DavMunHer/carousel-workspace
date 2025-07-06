@@ -1,7 +1,18 @@
 import { CommonModule, NgClass } from '@angular/common';
-import { Component, ContentChild, ElementRef, inject, input, signal, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ContentChild,
+  ElementRef,
+  inject,
+  input,
+  signal,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { AUTO_SCROLL_CONFIG } from './config/autoScrollConfig';
 import { CardComponent } from './subcomponents/card/card.component';
+import { CarouselService } from './carousel.service';
+import { CardPlaceholder } from './types/card';
 
 @Component({
   selector: 'carousel',
@@ -11,7 +22,7 @@ import { CardComponent } from './subcomponents/card/card.component';
 })
 export class CarouselComponent {
   public scrollBehaviour = input<'auto' | 'manual-only'>('auto');
-  private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, {optional: true});
+  private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, { optional: true });
   public autoScrollLocked = signal<boolean>(false);
   private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement;
   protected scrollLocked = signal<boolean>(false);
@@ -20,10 +31,10 @@ export class CarouselComponent {
   @ContentChild(TemplateRef) userTemplate!: TemplateRef<any>;
   @ViewChild('defaultTemplate') defaultTemplate!: TemplateRef<any>;
 
+
   get templateToUse(): TemplateRef<any> {
     return this.userTemplate ?? this.defaultTemplate;
   }
-
 
   ngOnInit(): void {
     if (this.scrollBehaviour() == 'auto') {
@@ -37,7 +48,9 @@ export class CarouselComponent {
       '.content'
     ) as HTMLElement;
     const containerLeftPosition = fatherContainer.scrollLeft;
-    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
+    const card = this.carouselHtmlElement.querySelector(
+      '.carousel-card-container'
+    );
     const cardWidth = card?.getBoundingClientRect().width!;
     const cardsGap = parseInt(
       getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap')
@@ -83,7 +96,7 @@ export class CarouselComponent {
     let firstMoveDelayMultiplier = 1.5; // Delay for the first move when restarting the scroll (back to left)
     if (this.autoScrollConfig) {
       msPerAutoMove = this.autoScrollConfig.msPerMove;
-      firstMoveDelayMultiplier = this.autoScrollConfig.firstMoveDelayMultiplier
+      firstMoveDelayMultiplier = this.autoScrollConfig.firstMoveDelayMultiplier;
     }
 
     if (!this.autoScrollLocked()) {
@@ -114,7 +127,9 @@ export class CarouselComponent {
       '.content'
     ) as HTMLElement;
     const containerLeftPosition = fatherContainer.scrollLeft;
-    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
+    const card = this.carouselHtmlElement.querySelector(
+      '.carousel-card-container'
+    );
     const cardWidth = card?.getBoundingClientRect().width!;
     const cardsGap = parseInt(
       getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap')
@@ -142,7 +157,9 @@ export class CarouselComponent {
     const content = this.carouselHtmlElement.querySelector(
       '.content'
     ) as HTMLElement;
-    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
+    const card = this.carouselHtmlElement.querySelector(
+      '.carousel-card-container'
+    );
     const cardDimension = card?.getBoundingClientRect();
     const containerWidth = cardDimension?.width;
     const showedCards = Number(

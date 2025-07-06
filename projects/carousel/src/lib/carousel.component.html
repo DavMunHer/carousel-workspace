@@ -35,15 +35,15 @@
     </button>
     <div class="content">
         @for (card of cards(); track $index) {
-        <div class="carousel-card-container">
-            <!-- <card-template [card]="card" (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()" /> -->
-        <ng-container *ngTemplateOutlet="templateToUse; context: { $implicit: card }"></ng-container>
-        </div>
+            <div class="carousel-card-container">
+                <!-- <card-template [card]="card" (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()" /> -->
+                <ng-container *ngTemplateOutlet="templateToUse; context: { $implicit: card }"></ng-container>
+            </div>
         }
     </div>
 </div>
 
 
-<ng-template #defaultTemplate let-card>
-    <card-template [card]="card" (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()" />
+<ng-template #defaultTemplate>
+    <card-template (mouseenter)="stopAutoScroll()" (mouseleave)="resumeAutoScroll()" />
 </ng-template>

@@ -1,16 +1,16 @@
 <div class="card">
     <div class="card-img">
-        <img class="img" [src]="card()?.imageSrc" [alt]="card()?.imageAlt">
+        <img class="img" [src]="card.imageSrc" [alt]="card.imageAlt">
     </div>
     @if (mode() == 'complex') {
         <div class="card-info">
             <div class="top-section">
-                <div class="service-name">{{card()?.subscription}}</div>
-                <div class="timestamp">{{card()?.timestamp}} days ago</div>
+                <div class="service-name">{{card.subscription}}</div>
+                <div class="timestamp">Add yours!</div>
             </div>
             <div class="button-section">
-                <div class="persons">2/{{card()?.persons}}</div>
-                <div class="price">€{{card()?.price}}</div>
+                <div class="persons">Check <a target="_blank" href="https://github.com/DavMunHer/carousel-workspace/tree/main/projects/carousel">docs</a> & <a target="_blank" href="https://github.com/DavMunHer/carousel-workspace/tree/main/projects/carousel/src/lib">source code</a> </div>
+                <!-- <div class="price">€{{card.price}}</div> -->
             </div>
         </div>
     }
