@@ -1,10 +1,11 @@
 import { NgClass } from '@angular/common';
 import { Component, ElementRef, inject, input, signal } from '@angular/core';
 import { AUTO_SCROLL_CONFIG } from './config/autoScrollConfig';
+import { CardComponent } from './subcomponents/card/card.component';
 
 @Component({
   selector: 'carousel',
-  imports: [NgClass],
+  imports: [NgClass, CardComponent],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css',
 })
