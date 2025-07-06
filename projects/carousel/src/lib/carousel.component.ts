@@ -1,103 +1,23 @@
-import { NgClass } from '@angular/common';
-import { Component, ElementRef, inject, input, signal } from '@angular/core';
+import { CommonModule, NgClass } from '@angular/common';
+import { Component, ContentChild, ElementRef, inject, input, signal, TemplateRef } from '@angular/core';
 import { AUTO_SCROLL_CONFIG } from './config/autoScrollConfig';
 import { CardComponent } from './subcomponents/card/card.component';
 
 @Component({
   selector: 'carousel',
-  imports: [NgClass, CardComponent],
+  imports: [NgClass, CommonModule, CardComponent],
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css',
 })
 export class CarouselComponent {
   public scrollBehaviour = input<'auto' | 'manual-only'>('auto');
   private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, {optional: true});
-
   public autoScrollLocked = signal<boolean>(false);
   private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement;
   protected scrollLocked = signal<boolean>(false);
-  cards = signal([
-    {
-      subscription: '1',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '2',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '3',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '4',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '5',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '6',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '7',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '8',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '9',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-    {
-      subscription: '10',
-      imageSrc: '/img/pineapple.jpg',
-      imageAlt: 'Pineapple carousel image',
-      persons: 4,
-      price: 25,
-      timestamp: 2,
-    },
-  ]);
+
+  public cards = input.required<any[]>();
+  @ContentChild(TemplateRef) template!: TemplateRef<any>;
 
   ngOnInit(): void {
     if (this.scrollBehaviour() == 'auto') {
