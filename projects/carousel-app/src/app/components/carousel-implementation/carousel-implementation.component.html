@@ -1,1 +1,5 @@
-<carousel ></carousel>
+<carousel [cards]="cards()">
+    <ng-template let-cardInfo>
+        <custom-card [card]="cardInfo"></custom-card>
+    </ng-template>
+</carousel>
