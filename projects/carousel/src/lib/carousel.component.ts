@@ -11,8 +11,6 @@ import {
 } from '@angular/core';
 import { AUTO_SCROLL_CONFIG } from './config/autoScrollConfig';
 import { CardComponent } from './subcomponents/card/card.component';
-import { CarouselService } from './carousel.service';
-import { CardPlaceholder } from './types/card';
 
 @Component({
   selector: 'carousel',
@@ -22,23 +20,23 @@ import { CardPlaceholder } from './types/card';
 })
 export class CarouselComponent {
   public scrollBehaviour = input<'auto' | 'manual-only'>('auto');
-  private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, { optional: true });
-  public autoScrollLocked = signal<boolean>(false);
-  private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement;
-  protected scrollLocked = signal<boolean>(false);
+  private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, { optional: true }); //User config for the scroll behavior
+
+  protected autoScrollLocked = signal<boolean>(false); //For stopping auto scroll when hovering cards and arrows
+  private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement; //For getting info about children elements
+  protected scrollLocked = signal<boolean>(false); //For not being able to spam the arrows buttons
 
   public cards = input.required<any[]>();
-  @ContentChild(TemplateRef) userTemplate!: TemplateRef<any>;
-  @ViewChild('defaultTemplate') defaultTemplate!: TemplateRef<any>;
+  @ContentChild(TemplateRef) userCardTemplate!: TemplateRef<any>;
+  @ViewChild('defaultTemplate') defaultCardTemplate!: TemplateRef<any>;
 
 
   get templateToUse(): TemplateRef<any> {
-    return this.userTemplate ?? this.defaultTemplate;
+    return this.userCardTemplate ?? this.defaultCardTemplate;
   }
 
   ngOnInit(): void {
     if (this.scrollBehaviour() == 'auto') {
-      // this.startAutoScroll();
       this.startStoppableAutoScroll();
     }
   }
@@ -64,31 +62,6 @@ export class CarouselComponent {
     );
     // We have reached the end of the cards, now go back to beginning (This will be triggered in the autoScroll method)
     return movedTimes >= this.cards().length - showedCards;
-  }
-
-  // This method is currently not being used at all
-  private startAutoScroll(direction: 'right' | 'left' = 'right') {
-    let msPerMove = 2000;
-    let intervalCounter = 0;
-    const showedCards = Number(
-      getComputedStyle(this.carouselHtmlElement).getPropertyValue(
-        '--cards-number'
-      )
-    );
-    if (direction == 'right') {
-      const currentInterval = setInterval(() => {
-        intervalCounter++;
-        this.scrollContainer(direction);
-        if (intervalCounter == this.cards().length - showedCards + 1) {
-          clearInterval(currentInterval);
-          const nextDirection = direction == 'right' ? 'left' : 'right';
-          this.startAutoScroll(nextDirection);
-        }
-      }, msPerMove);
-    } else {
-      this.scrollToEnd('left');
-      this.startAutoScroll('right');
-    }
   }
 
   private startStoppableAutoScroll() {

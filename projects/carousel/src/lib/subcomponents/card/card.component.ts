@@ -1,8 +1,7 @@
-import { Component, input, OnInit, signal } from '@angular/core';
-import { CardPlaceholder } from '../../types/card';
+import { Component, input } from '@angular/core';
 
 @Component({
-  selector: 'card-template',
+  selector: 'default-card-template',
   imports: [],
   templateUrl: './card.component.html',
   styleUrl: './card.component.css'
