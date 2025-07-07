@@ -3,23 +3,6 @@
   --cards-gap: 20px;
   --cards-number: 5;
   --arrow-distance: calc((100% - ((var(--cards-number) * var(--card-width)) + ((var(--cards-number) - 1) * var(--cards-gap))) ) / 2 - 65px);
-  
-  /* FIXME: Try to get cards number dynamically */
-  @media (max-width: 1500px) {
-    --cards-number: 4;
-  }
-
-  @media (max-width: 1200px) {
-    --cards-number: 3;
-  }
-
-  @media (max-width: 950px) {
-    --cards-number: 2;
-  }
-
-  @media (max-width: 650px) {
-    --cards-number: 1;
-  }
 }
 
 .container {
@@ -90,7 +73,7 @@
     /* End styles for removing scrollbar*/
 
     & .carousel-card-container {
-      flex: 0 0 var(--card-width);
+      flex: 0 0 auto;
       border: 1px solid #ccc;
       border-radius: 16px;
       overflow: hidden;
@@ -103,9 +86,5 @@
       }
 
     }
-  }
-
-  & .content::-webkit-scrollbar {
-    display: none;
   }
 }
