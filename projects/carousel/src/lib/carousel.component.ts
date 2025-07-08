@@ -45,22 +45,21 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.adjustCssVariables();
+      this.adjustCssVariables();
     window.addEventListener('resize', () => this.adjustCssVariables())
   }
 
   private adjustCssVariables() {
     const cardContainer = this.carouselHtmlElement.querySelector('.carousel-card-container') as HTMLElement;
     const cardContainerDimensions = cardContainer.getBoundingClientRect();
-    const cardWidth = cardContainerDimensions.width;
+    const cardWidth = cardContainerDimensions.width - 2;
     let mediaWidthMargin = (cardWidth * 1.5);
+    this.carouselHtmlElement.style.setProperty('--card-width', `${cardWidth}px`);
 
     if (cardWidth < 300) {
       mediaWidthMargin = (cardWidth * 2);
     }
-
-    this.carouselHtmlElement.style.setProperty('--card-width', `${cardWidth}px`);
-
+    
     if (window.innerWidth <= cardWidth + mediaWidthMargin) {
       this.carouselHtmlElement.style.setProperty('--cards-number', `1`);
     } else if (window.innerWidth <= (cardWidth * 2) + mediaWidthMargin) {
@@ -69,9 +68,12 @@ export class CarouselComponent implements OnInit, AfterViewInit {
       this.carouselHtmlElement.style.setProperty('--cards-number', `3`);
     } else if (window.innerWidth <= (cardWidth * 4) + mediaWidthMargin) {
       this.carouselHtmlElement.style.setProperty('--cards-number', `4`);
-    } else {
+    } else if (window.innerWidth <= (cardWidth * 5) + mediaWidthMargin){
       this.carouselHtmlElement.style.setProperty('--cards-number', `5`);
+    } else {
+      this.carouselHtmlElement.style.setProperty('--cards-number', `6`);
     }
+
   }
 
   private reachedEnd() {
@@ -142,14 +144,13 @@ export class CarouselComponent implements OnInit, AfterViewInit {
     );
     const pxPerMovement = cardWidth + cardsGap;
     let realMovement = pxPerMovement;
-
     if (direction == 'right') {
-      if (containerLeftPosition % pxPerMovement != 0) {
+      if (containerLeftPosition % pxPerMovement > 10) {
         realMovement -= containerLeftPosition % pxPerMovement;
       }
       fatherContainer.scrollLeft += realMovement;
     } else {
-      if (containerLeftPosition % pxPerMovement != 0) {
+      if (containerLeftPosition % pxPerMovement > 10) {
         realMovement = containerLeftPosition % pxPerMovement;
       }
       fatherContainer.scrollLeft -= realMovement;
