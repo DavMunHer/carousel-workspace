@@ -64,11 +64,17 @@ export class CarouselComponent implements OnInit, AfterViewInit {
       }
     }
     
+    let checked = false;
+
     for (let i = 1; i <= this.maxShowedCards(); i++) {
       if (window.innerWidth <= (cardWidth * i) + mediaWidthMargin) {
-          this.carouselHtmlElement.style.setProperty('--cards-number', `${i}`);
-          break; // We already know which is the cards number for this screen width. No need to check the rest
+        this.carouselHtmlElement.style.setProperty('--cards-number', `${i}`);
+        checked = true;
+        break; // We already know which is the cards number for this screen width. No need to check the rest
       }
+    }
+    if (!checked) {
+      this.carouselHtmlElement.style.setProperty('--cards-number', `${this.maxShowedCards()}`);
     }
 
   }
