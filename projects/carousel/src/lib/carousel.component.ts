@@ -1,10 +1,12 @@
 import { CommonModule, NgClass } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ContentChild,
   ElementRef,
   inject,
   input,
+  OnInit,
   signal,
   TemplateRef,
   ViewChild,
@@ -18,8 +20,9 @@ import { CardComponent } from './subcomponents/card/card.component';
   templateUrl: './carousel.component.html',
   styleUrl: './carousel.component.css',
 })
-export class CarouselComponent {
-  public scrollBehaviour = input<'auto' | 'manual-only'>('auto');
+export class CarouselComponent implements OnInit, AfterViewInit {
+ 
+  public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
   private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, { optional: true }); //User config for the scroll behavior
 
   protected autoScrollLocked = signal<boolean>(false); //For stopping auto scroll when hovering cards and arrows
@@ -39,6 +42,38 @@ export class CarouselComponent {
     if (this.scrollBehaviour() == 'auto') {
       this.startStoppableAutoScroll();
     }
+  }
+
+  ngAfterViewInit(): void {
+      this.adjustCssVariables();
+    window.addEventListener('resize', () => this.adjustCssVariables())
+  }
+
+  private adjustCssVariables() {
+    const cardContainer = this.carouselHtmlElement.querySelector('.carousel-card-container') as HTMLElement;
+    const cardContainerDimensions = cardContainer.getBoundingClientRect();
+    const cardWidth = cardContainerDimensions.width - 2;
+    let mediaWidthMargin = (cardWidth * 1.5);
+    this.carouselHtmlElement.style.setProperty('--card-width', `${cardWidth}px`);
+
+    if (cardWidth < 300) {
+      mediaWidthMargin = (cardWidth * 2);
+    }
+    
+    if (window.innerWidth <= cardWidth + mediaWidthMargin) {
+      this.carouselHtmlElement.style.setProperty('--cards-number', `1`);
+    } else if (window.innerWidth <= (cardWidth * 2) + mediaWidthMargin) {
+      this.carouselHtmlElement.style.setProperty('--cards-number', `2`);
+    } else if (window.innerWidth <= (cardWidth * 3) + mediaWidthMargin) {
+      this.carouselHtmlElement.style.setProperty('--cards-number', `3`);
+    } else if (window.innerWidth <= (cardWidth * 4) + mediaWidthMargin) {
+      this.carouselHtmlElement.style.setProperty('--cards-number', `4`);
+    } else if (window.innerWidth <= (cardWidth * 5) + mediaWidthMargin){
+      this.carouselHtmlElement.style.setProperty('--cards-number', `5`);
+    } else {
+      this.carouselHtmlElement.style.setProperty('--cards-number', `6`);
+    }
+
   }
 
   private reachedEnd() {
@@ -109,14 +144,13 @@ export class CarouselComponent {
     );
     const pxPerMovement = cardWidth + cardsGap;
     let realMovement = pxPerMovement;
-
     if (direction == 'right') {
-      if (containerLeftPosition % pxPerMovement != 0) {
+      if (containerLeftPosition % pxPerMovement > 10) {
         realMovement -= containerLeftPosition % pxPerMovement;
       }
       fatherContainer.scrollLeft += realMovement;
     } else {
-      if (containerLeftPosition % pxPerMovement != 0) {
+      if (containerLeftPosition % pxPerMovement > 10) {
         realMovement = containerLeftPosition % pxPerMovement;
       }
       fatherContainer.scrollLeft -= realMovement;
