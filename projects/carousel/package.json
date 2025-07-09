@@ -1,6 +1,19 @@
 {
-  "name": "carousel",
+  "name": "@triwebdev/carousel",
+  "description": "Carousel component that can be used in any Angular v19+ project",
+  "license": "MIT",
   "version": "0.0.1",
+  "typings": "index.d.ts",
+  "contributors": [
+    {
+      "name": "DavMunHer",
+      "email": "davidmunyozh@gmail.com"
+    },
+    {
+      "name": "OscBarCan",
+      "email": "oscarbarber2004@gmail.com"
+    }
+  ],
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0"

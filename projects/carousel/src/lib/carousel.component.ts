@@ -21,13 +21,13 @@ import { CardComponent } from './subcomponents/card/card.component';
   styleUrl: './carousel.component.css',
 })
 export class CarouselComponent implements OnInit, AfterViewInit {
- 
   public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
   private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, { optional: true }); //User config for the scroll behavior
 
   protected autoScrollLocked = signal<boolean>(false); //For stopping auto scroll when hovering cards and arrows
   private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement; //For getting info about children elements
   protected scrollLocked = signal<boolean>(false); //For not being able to spam the arrows buttons
+  public maxShowedCards = input<number>(6); // For customizing the max showed cards
 
   public cards = input.required<any[]>();
   @ContentChild(TemplateRef) userCardTemplate!: TemplateRef<any>;
@@ -58,20 +58,17 @@ export class CarouselComponent implements OnInit, AfterViewInit {
 
     if (cardWidth < 300) {
       mediaWidthMargin = (cardWidth * 2);
+
+      if (cardWidth < 200) {
+        mediaWidthMargin = (cardWidth * 3);
+      }
     }
     
-    if (window.innerWidth <= cardWidth + mediaWidthMargin) {
-      this.carouselHtmlElement.style.setProperty('--cards-number', `1`);
-    } else if (window.innerWidth <= (cardWidth * 2) + mediaWidthMargin) {
-      this.carouselHtmlElement.style.setProperty('--cards-number', `2`);
-    } else if (window.innerWidth <= (cardWidth * 3) + mediaWidthMargin) {
-      this.carouselHtmlElement.style.setProperty('--cards-number', `3`);
-    } else if (window.innerWidth <= (cardWidth * 4) + mediaWidthMargin) {
-      this.carouselHtmlElement.style.setProperty('--cards-number', `4`);
-    } else if (window.innerWidth <= (cardWidth * 5) + mediaWidthMargin){
-      this.carouselHtmlElement.style.setProperty('--cards-number', `5`);
-    } else {
-      this.carouselHtmlElement.style.setProperty('--cards-number', `6`);
+    for (let i = 1; i <= this.maxShowedCards(); i++) {
+      if (window.innerWidth <= (cardWidth * i) + mediaWidthMargin) {
+          this.carouselHtmlElement.style.setProperty('--cards-number', `${i}`);
+          break; // We already know which is the cards number for this screen width. No need to check the rest
+      }
     }
 
   }
