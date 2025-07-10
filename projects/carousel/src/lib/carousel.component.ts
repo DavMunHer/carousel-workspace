@@ -1,6 +1,7 @@
 import { CommonModule, NgClass } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -21,17 +22,20 @@ import { CardComponent } from './subcomponents/card/card.component';
   styleUrl: './carousel.component.css',
 })
 export class CarouselComponent implements OnInit, AfterViewInit {
-  public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
-  private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, { optional: true }); //User config for the scroll behavior
-
-  protected autoScrollLocked = signal<boolean>(false); //For stopping auto scroll when hovering cards and arrows
-  private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement; //For getting info about children elements
-  protected scrollLocked = signal<boolean>(false); //For not being able to spam the arrows buttons
+  public cards = input.required<any[]>();
   public maxShowedCards = input<number>(6); // For customizing the max showed cards
 
-  public cards = input.required<any[]>();
+  public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
+  protected scrollLocked = signal<boolean>(false); //For not being able to spam the arrows buttons
+  private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, { optional: true }); //User config for the auto scroll behavior
+  protected autoScrollLocked = signal<boolean>(false); //For stopping auto scroll when hovering cards and arrows
+
+  private carouselHtmlElement = inject(ElementRef).nativeElement as HTMLElement; //For getting info about children elements
+
   @ContentChild(TemplateRef) userCardTemplate!: TemplateRef<any>;
-  @ViewChild('defaultTemplate') defaultCardTemplate!: TemplateRef<any>;
+  @ViewChild('defaultTemplate') defaultCardTemplate!: TemplateRef<any>; //Will not be rendered until afterViewInit
+  protected templateToShow!: TemplateRef<any>;
+  private cdr = inject(ChangeDetectorRef); //For detecting changes in afterViewInit (rendering proper template)
 
 
   ngOnInit(): void {
@@ -41,6 +45,9 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.templateToShow = this.userCardTemplate ?? this.defaultCardTemplate;
+    this.cdr.detectChanges();
+
     this.adjustCssVariables();
     window.addEventListener('resize', () => this.adjustCssVariables())
   }
@@ -48,11 +55,8 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   private adjustCssVariables() {
     const cardContainer = this.carouselHtmlElement.querySelector('.carousel-card-container') as HTMLElement;
     const cardContainerDimensions = cardContainer.getBoundingClientRect();
-    let cardWidth = cardContainerDimensions.width - 2;
+    const cardWidth = cardContainerDimensions.width - 2;
 
-    if (!this.userCardTemplate) {
-      cardWidth = 252; //Default width from the defaultCardTemplate
-    }
     let mediaWidthMargin = (cardWidth * 1.5);
     this.carouselHtmlElement.style.setProperty('--card-width', `${cardWidth}px`);
 
@@ -66,7 +70,7 @@ export class CarouselComponent implements OnInit, AfterViewInit {
     
     let checked = false;
 
-    for (let i = 1; i <= this.maxShowedCards(); i++) {
+    for (let i = 1; i <= this.maxShowedCards(); i++) { //For checking how many cards fit in the window width (smaller devices)
       if (window.innerWidth <= (cardWidth * i) + mediaWidthMargin) {
         this.carouselHtmlElement.style.setProperty('--cards-number', `${i}`);
         checked = true;
@@ -74,6 +78,7 @@ export class CarouselComponent implements OnInit, AfterViewInit {
       }
     }
     if (!checked) {
+      // If we did not met any of the media queries condition, adjust to the maximum cards that the user wants to show (bigger devices)
       this.carouselHtmlElement.style.setProperty('--cards-number', `${this.maxShowedCards()}`);
     }
 
