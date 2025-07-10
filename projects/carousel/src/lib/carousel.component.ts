@@ -34,10 +34,6 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   @ViewChild('defaultTemplate') defaultCardTemplate!: TemplateRef<any>;
 
 
-  get templateToUse(): TemplateRef<any> {
-    return this.userCardTemplate ?? this.defaultCardTemplate;
-  }
-
   ngOnInit(): void {
     if (this.scrollBehaviour() == 'auto') {
       this.startStoppableAutoScroll();
@@ -45,14 +41,18 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-      this.adjustCssVariables();
+    this.adjustCssVariables();
     window.addEventListener('resize', () => this.adjustCssVariables())
   }
 
   private adjustCssVariables() {
     const cardContainer = this.carouselHtmlElement.querySelector('.carousel-card-container') as HTMLElement;
     const cardContainerDimensions = cardContainer.getBoundingClientRect();
-    const cardWidth = cardContainerDimensions.width - 2;
+    let cardWidth = cardContainerDimensions.width - 2;
+
+    if (!this.userCardTemplate) {
+      cardWidth = 252; //Default width from the defaultCardTemplate
+    }
     let mediaWidthMargin = (cardWidth * 1.5);
     this.carouselHtmlElement.style.setProperty('--card-width', `${cardWidth}px`);
 
