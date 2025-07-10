@@ -1,5 +1,10 @@
-<carousel [cards]="cards()" [maxShowedCards]="5">
-    <ng-template let-cardInfo>
-        <custom-card [card]="cardInfo"></custom-card>
-    </ng-template>
-</carousel>
+
+<div style="display:flex; align-items: center; justify-content: center;">
+    <div style="width: 90vw;">
+        <carousel [cards]="cards()" [maxShowedCards]="9">
+            <ng-template let-cardInfo>
+                <custom-card [card]="cardInfo"></custom-card>
+            </ng-template>
+        </carousel>
+    </div>
+</div>
