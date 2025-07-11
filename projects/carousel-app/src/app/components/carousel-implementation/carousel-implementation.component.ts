@@ -1,10 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { CarouselComponent } from 'carousel';
 import { CardComponent } from './card/card.component';
+import { CarouselComponent } from 'carousel';
 
 @Component({
   selector: 'carousel-implementation',
-  imports: [CarouselComponent, CardComponent],
+  imports: [CardComponent, CarouselComponent],
   templateUrl: './carousel-implementation.component.html',
   styleUrl: './carousel-implementation.component.css'
 })
