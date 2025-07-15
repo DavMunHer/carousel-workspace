@@ -12,11 +12,11 @@
 <a href="https://github.com/DavMunHer/carousel-workspace/commits/main/">
     <img src="https://img.shields.io/github/last-commit/DavMunHer/carousel-workspace" alt="last commit">
 </a>
-  <a href="https://www.npmjs.com/package/@triwebdev/carousel">
-    <img src="https://img.shields.io/npm/v/@triwebdev/carousel" alt="npm version">
+  <a href="https://www.npmjs.com/package/@triwebdev/carousel-component">
+    <img src="https://img.shields.io/npm/v/@triwebdev/carousel-component" alt="npm version">
   </a>
-  <a href="https://github.com/DavMunHer/carousel-workspace/blob/master/projects/auth/LICENSE">
-    <img src="https://img.shields.io/github/license/DavMunHer/carousel-workspace" alt="license">
+  <a href="https://github.com/DavMunHer/carousel-workspace/blob/version-1/projects/carousel/LICENSE">
+    <img src="https://img.shields.io/github/license/davmunher/carousel-workspace" alt="license">
 </a>
   <a href="https://twd-components-gallery-eb2rfxh8n-dmuoher.vercel.app/components/carousel/playground">
     <img src="https://img.shields.io/badge/demo-See deployment-green.svg" alt="demo">
@@ -43,7 +43,7 @@ From your command line:
 
 ```bash
 # Install this package
-$ npm install @triwebdev/carousel
+$ npm install @triwebdev/carousel-component
 ```
 
 Once you have download the package you can import it in the .ts of your component like this:
@@ -51,7 +51,7 @@ Once you have download the package you can import it in the .ts of your componen
 ```ts
 import { Component, signal } from '@angular/core';
 import { CardComponent } from './card/card.component'; /* Your own component */
-import { CarouselComponent } from '@triwebdev/carousel';
+import { CarouselComponent } from '@triwebdev/carousel-component';
 
 @Component({
   selector: 'carousel-implementation',
@@ -87,7 +87,7 @@ And in your .html like this:
 </carousel>
 ```
 
-The `<carousel></carousel>` component comes from the package installed (``@triwebdev/carousel``). The `<custom-card></custom-card>` comes from your project, where you can create your own card that suits to your theme.
+The `<carousel></carousel>` component comes from the package installed (``@triwebdev/carousel-component``). The `<custom-card></custom-card>` comes from your project, where you can create your own card that suits to your theme.
 
 Please note that the `<carousel></carousel>` component has an input of cards. These cards should be available in the component where you will implement the carousel.
 
@@ -127,7 +127,7 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideCarousel } from '@triwebdev/carousel';
+import { provideCarousel } from '@triwebdev/carousel-component';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -144,7 +144,7 @@ As you can see, by using this provider you can change two properties of the scro
 
 ## Download
 
-You can download the latest installable version of the component [here](https://www.npmjs.com/package/@triwebdev/carousel) .
+You can download the latest installable version of the component [here](https://www.npmjs.com/package/@triwebdev/carousel-component) .
 
 ## Authors
 
