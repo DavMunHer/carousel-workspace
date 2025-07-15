@@ -2,7 +2,7 @@
   "name": "@triwebdev/carousel-component",
   "description": "Carousel component that can be used in any Angular v19+ project",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "typings": "index.d.ts",
   "publishConfig": {
     "access": "public"
