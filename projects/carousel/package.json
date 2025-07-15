@@ -4,6 +4,9 @@
   "license": "MIT",
   "version": "1.0.1",
   "typings": "index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "contributors": [
     {
       "name": "DavMunHer",
