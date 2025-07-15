@@ -25,7 +25,7 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   public cards = input.required<any[]>();
   public maxShowedCards = input<number>(6); // For customizing the max showed cards
 
-  public scrollBehaviour = input<'auto' | 'manual-only'>('manual-only');
+  public scrollBehavior = input<'auto' | 'manual-only'>('manual-only');
   protected scrollLocked = signal<boolean>(false); //For not being able to spam the arrows buttons
   private autoScrollConfig = inject(AUTO_SCROLL_CONFIG, { optional: true }); //User config for the auto scroll behavior
   protected autoScrollLocked = signal<boolean>(false); //For stopping auto scroll when hovering cards and arrows
@@ -39,7 +39,7 @@ export class CarouselComponent implements OnInit, AfterViewInit {
 
 
   ngOnInit(): void {
-    if (this.scrollBehaviour() == 'auto') {
+    if (this.scrollBehavior() == 'auto') {
       this.startStoppableAutoScroll();
     }
   }
