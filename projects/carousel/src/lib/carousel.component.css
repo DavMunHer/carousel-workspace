@@ -2,7 +2,7 @@
   --card-width: 250px;
   --cards-gap: 20px;
   --cards-number: 5;
-  --arrow-distance: calc((100% - ((var(--cards-number) * var(--card-width)) + ((var(--cards-number) - 1) * var(--cards-gap))) ) / 2 - 65px);
+  --arrow-distance: calc((100% - ((var(--cards-number) * var(--card-width)) + ((var(--cards-number) - 1) * var(--cards-gap)))) / 2 - 65px);
 }
 
 .container {
@@ -52,15 +52,13 @@
   }
 
   & .content {
-    width: calc(
-      (var(--cards-number) * var(--card-width)) +
-        ((var(--cards-number) - 1) * var(--cards-gap))
-    );
+    width: calc((var(--cards-number) * var(--card-width)) + ((var(--cards-number) - 1) * var(--cards-gap)));
     display: flex;
     flex-direction: row;
     gap: var(--cards-gap);
     overflow-x: auto;
     padding: 20px;
+    box-sizing: content-box;
     scroll-behavior: smooth;
     /* Styles for removing scrollbar*/
     overflow-x: scroll;
