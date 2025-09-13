@@ -1,7 +1,7 @@
 
 <div style="display:flex; align-items: center; justify-content: center;">
     <div style="width: 90vw;">
-        <carousel [cards]="cards()" [maxShowedCards]="9">
+        <carousel [cards]="cards()" [maxShowedCards]="9" #carouselElement>
             <ng-template let-cardInfo>
                 <custom-card [card]="cardInfo"></custom-card>
             </ng-template>
