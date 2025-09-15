@@ -185,25 +185,19 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   }
 
   protected scrollToEnd(direction: 'left' | 'right') {
-    const content = this.carouselHtmlElement.querySelector(
-      '.content'
-    ) as HTMLElement;
-    const card = this.carouselHtmlElement.querySelector(
-      '.carousel-card-container'
-    );
+    const content = this.carouselHtmlElement.querySelector('.content') as HTMLElement;
+    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
     const cardDimension = card?.getBoundingClientRect();
     const containerWidth = cardDimension?.width;
-    const showedCards = Number(
-      getComputedStyle(this.carouselHtmlElement).getPropertyValue(
-        '--cards-number'
-      )
-    );
+    const showedCards = Number(getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-number'));
+    const cardsGap = Number(getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap'));
+
     if (direction == 'right') {
       content.scrollLeft +=
-        containerWidth! + 20 * (this.cards().length - showedCards);
+        (containerWidth! + cardsGap) * (this.cards().length - showedCards);
     } else {
       content.scrollLeft -=
-        (containerWidth! + 20) * (this.cards().length - showedCards);
+        (containerWidth! + cardsGap) * (this.cards().length - showedCards);
     }
   }
 }
