@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, ElementRef, signal, viewChild } from '@angular/core';
 import { CardComponent } from './card/card.component';
 import { CarouselComponent } from 'carousel';
 
@@ -6,7 +6,7 @@ import { CarouselComponent } from 'carousel';
   selector: 'carousel-implementation',
   imports: [CardComponent, CarouselComponent],
   templateUrl: './carousel-implementation.component.html',
-  styleUrl: './carousel-implementation.component.css'
+  styleUrl: './carousel-implementation.component.css',
 })
 export class CarouselImplementationComponent {
   cards = signal([
@@ -91,4 +91,10 @@ export class CarouselImplementationComponent {
       timestamp: 2,
     },
   ]);
+
+  protected carousel = viewChild('carouselElement', { read: ElementRef });
+
+  ngAfterViewInit(): void {
+    this.carousel()?.nativeElement.style.setProperty('--cards-gap', '40px');
+  }
 }

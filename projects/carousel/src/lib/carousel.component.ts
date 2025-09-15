@@ -142,24 +142,40 @@ export class CarouselComponent implements OnInit, AfterViewInit {
     const fatherContainer = this.carouselHtmlElement.querySelector(
       '.content'
     ) as HTMLElement;
-    const containerLeftPosition = fatherContainer.scrollLeft;
+    const containerLeftPosition = parseFloat(fatherContainer.scrollLeft.toFixed(2));
     const card = this.carouselHtmlElement.querySelector(
       '.carousel-card-container'
     );
-    const cardWidth = card?.getBoundingClientRect().width!;
+    if (!card) {
+      return;
+    }
+    const cardWidth = parseFloat((card.getBoundingClientRect().width!).toFixed(2));
     const cardsGap = parseInt(
       getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap')
     );
     const pxPerMovement = cardWidth + cardsGap;
+
+    // Math for fixing movement in case you are in the middle of a card
     let realMovement = pxPerMovement;
+    const fixedMovement = containerLeftPosition % pxPerMovement;
+    let diff = fixedMovement;
+    const errorMargin = 10;
+    if (fixedMovement > errorMargin) {
+      diff = Math.abs((containerLeftPosition % pxPerMovement) - pxPerMovement);
+    }
     if (direction == 'right') {
-      if (containerLeftPosition % pxPerMovement > 10) {
-        realMovement -= containerLeftPosition % pxPerMovement;
+      if (diff > errorMargin) {
+        /*
+         This validation has to be done because the expected movement (containerLeftPosition % pxPerMovement) 
+         of the container sometimes is slightly different than 0
+        */
+        realMovement -= fixedMovement;
       }
       fatherContainer.scrollLeft += realMovement;
     } else {
-      if (containerLeftPosition % pxPerMovement > 10) {
-        realMovement = containerLeftPosition % pxPerMovement;
+      // Moving to the left side
+      if (diff > errorMargin) {
+        realMovement = fixedMovement;
       }
       fatherContainer.scrollLeft -= realMovement;
     }
@@ -169,25 +185,19 @@ export class CarouselComponent implements OnInit, AfterViewInit {
   }
 
   protected scrollToEnd(direction: 'left' | 'right') {
-    const content = this.carouselHtmlElement.querySelector(
-      '.content'
-    ) as HTMLElement;
-    const card = this.carouselHtmlElement.querySelector(
-      '.carousel-card-container'
-    );
+    const content = this.carouselHtmlElement.querySelector('.content') as HTMLElement;
+    const card = this.carouselHtmlElement.querySelector('.carousel-card-container');
     const cardDimension = card?.getBoundingClientRect();
     const containerWidth = cardDimension?.width;
-    const showedCards = Number(
-      getComputedStyle(this.carouselHtmlElement).getPropertyValue(
-        '--cards-number'
-      )
-    );
+    const showedCards = Number(getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-number'));
+    const cardsGap = Number(getComputedStyle(this.carouselHtmlElement).getPropertyValue('--cards-gap'));
+
     if (direction == 'right') {
       content.scrollLeft +=
-        containerWidth! + 20 * (this.cards().length - showedCards);
+        (containerWidth! + cardsGap) * (this.cards().length - showedCards);
     } else {
       content.scrollLeft -=
-        (containerWidth! + 20) * (this.cards().length - showedCards);
+        (containerWidth! + cardsGap) * (this.cards().length - showedCards);
     }
   }
 }
